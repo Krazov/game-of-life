@@ -7,7 +7,7 @@ require(
         var runningId = 0;
         var tickCount = 0;
 
-        console.log('Game of life: Krazov edition');
+        console.log('Game of life: Krazov implementation');
 
         // prepare table
         controller

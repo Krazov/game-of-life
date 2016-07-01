@@ -2,12 +2,12 @@
 
 ## Basics
 
-* Buttons: stop, invert
-* Stopping after achieving balance
+* Buttons: invert
+* Stopping after achieving balance (compare arrays)
+* Moving running checker to controler (currently is in two different places)
 
 ## Features
 
-* Tick counter
 * Diversify _empty_ versus _dead_ to show population growth
 * Predefined sets
 * Count

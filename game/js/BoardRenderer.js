@@ -1,6 +1,6 @@
 define(
-    ['js/BoardModel.js', 'js/BoardController.js'],
-    function BoardRendererDefinitionFn(model, controller) {
+    ['js/BoardModel.js', 'js/BoardController.js', 'js/MessageUtil.js'],
+    function BoardRendererDefinitionFn(model, controller, message) {
         'use strict';
 
         var setContainer = function (container) {
@@ -48,6 +48,10 @@ define(
             var renderer = this;
 
             var clickCell = function (clickEvent) {
+                if (renderer.running) {
+                    return false;
+                }
+
                 var cell = clickEvent.target;
                 var [x, y] = renderer.getCellCoordinates(cell);
 
@@ -64,43 +68,9 @@ define(
             return this;
         };
 
-        var listenToStartButton = function () {
-            var renderer = this;
-
-            var runCycle = function () {
-                controller.updateTable();
-                renderer.refreshTable();
-
-                if (renderer.running) {
-                    setTimeout(runCycle, 1000);
-                }
-            };
-
-            var start = function () {
-                renderer.running = true;
-
-                setTimeout(runCycle, 1000);
-            };
-
-            document.getElementById('start').addEventListener('click', start);
-
-            return this;
-        };
-
-        var listenToClearButton = function () {
-            // TODO: redo, like, completely
-            var refreshFn = this.refreshTable.bind(this);
-            controller.clearTable();
-            document.getElementById('clear').addEventListener('click', refreshFn);
-
-            return this;
-        };
-
         var attachActions = function () {
             this
-                .listenToCells()
-                .listenToClearButton()
-                .listenToStartButton();
+                .listenToCells();
 
             return this;
         };
@@ -122,6 +92,20 @@ define(
             return this;
         };
 
+        var setRunning = function (value) {
+            var running = !!value;
+
+            this.running = running;
+
+            if (running) {
+                this.container.classList.add('is-running');
+            } else {
+                this.container.classList.remove('is-running');
+            }
+
+            return this;
+        };
+
         var getCellCoordinates = function (cell) {
             return [Number(cell.dataset.x), Number(cell.dataset.y)];
         }
@@ -136,10 +120,9 @@ define(
             drawBoard:           drawBoard,
             refreshTable:        refreshTable,
             listenToCells:       listenToCells,
-            listenToStartButton: listenToStartButton,
-            listenToClearButton: listenToClearButton,
             attachActions:       attachActions,
             describeCell:        describeCell,
+            setRunning:          setRunning,
             getCellCoordinates:  getCellCoordinates
         };
 

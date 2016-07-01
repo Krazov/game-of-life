@@ -1,6 +1,7 @@
 body {
     background-color: black;
     color: green;
+    font-family: Consolas, monospace;
     text-align: center;
 }
 
@@ -13,11 +14,14 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 2.5vw rgba(0, 0, 0, 1) inset;
     height: 5vw;
-    transition: background-color 1500ms ease;
+    transition: background-color 125ms ease;
     width: 5vw;
 }
 #board .active {
     background-color: darkkhaki;
+}
+#board.is-running td {
+    transition-duration: 1500ms;
 }
 
 .buttons {

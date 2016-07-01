@@ -42,7 +42,6 @@ define(
                 innerTable.push(innerRow);
             }
 
-            console.log(innerTable);
             this.board = innerTable;
 
             return this;

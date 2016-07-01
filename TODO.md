@@ -12,6 +12,8 @@
 * Predefined sets
 * Count
 * 3D world (cube)
+* Player defined board size
+* Board adjusting to screen size (CSS)
 
 ## Meta programming
 

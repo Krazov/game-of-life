@@ -16,6 +16,7 @@
 * Tail call optimization (probably not possible with setTimeout)
 * Single array
 * Native modules?
+* Comment code, even for yourself in the future
 
 ## Future plans
 

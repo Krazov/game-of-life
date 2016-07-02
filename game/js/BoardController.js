@@ -19,6 +19,8 @@ define(
                 this.board.push(innerRow);
             }
 
+            this.previous = JSON.parse(JSON.stringify(this.board));
+
             return this;
         };
 
@@ -42,6 +44,7 @@ define(
                 innerTable.push(innerRow);
             }
 
+            this.previous = this.board;
             this.board = innerTable;
 
             return this;
@@ -111,7 +114,11 @@ define(
             return this.board;
         };
 
-        var getCellValue = function (x, y) {
+        var getPreviousValue = function (x, y) {
+            return this.previous[y][x];
+        }
+
+        var getCellValue = function (x, y, previous) {
             return this.board[y][x];
         };
 
@@ -119,14 +126,15 @@ define(
         var BoardController = function() {};
 
         BoardController.prototype = {
-            setSize:         setSize,           // chainable
-            createBoard:     createBoard,       // chainable
-            getBoard:        getBoard,          // returns (Array) current board
-            getCellValue:    getCellValue,      // returns (Number) cell value
-            updateTable:     updateTable,       // chainable
-            clearTable:      clearTable,        // chainable
-            checkNeighbours: checkNeighbours,   // returns (Number) of neighbours
-            changeState:     changeState,       // chainable
+            setSize:          setSize,           // chainable
+            createBoard:      createBoard,       // chainable
+            getBoard:         getBoard,          // returns (Array) current board
+            getPreviousValue: getPreviousValue,      // returns (Number) cell value
+            getCellValue:     getCellValue,      // returns (Number) cell value
+            updateTable:      updateTable,       // chainable
+            clearTable:       clearTable,        // chainable
+            checkNeighbours:  checkNeighbours,   // returns (Number) of neighbours
+            changeState:      changeState,       // chainable
         };
 
         return new BoardController();

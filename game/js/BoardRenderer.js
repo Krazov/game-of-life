@@ -19,10 +19,9 @@ define(
                 for (var column = 0; column < board[row].length; ++column) {
                     var virtualCell = document.createElement('td');
 
+                    virtualCell.classList.add('empty');
                     virtualCell.dataset.x = column;
                     virtualCell.dataset.y = row;
-
-                    this.describeCell(virtualCell);
 
                     virtualRow.appendChild(virtualCell);
                 }
@@ -35,12 +34,17 @@ define(
             return this;
         };
 
-        var refreshTable = function () {
+        var refreshTable = function (clear) {
             var renderer = this;
 
             var cells = this.container.querySelectorAll('td');
             [].forEach.call(cells, function (cell) {
-                renderer.describeCell(cell);
+                if (clear && renderer.running) {
+                    cell.classList.remove('active');
+                    cell.classList.add('empty');
+                } else {
+                    renderer.describeCell(cell);
+                }
             });
         };
 
@@ -86,6 +90,9 @@ define(
                     break;
                 case model.STATE_DEAD:
                 default:
+                    if (controller.getPreviousValue(x, y) === model.STATE_ALIVE) {
+                        cell.classList.remove('empty');
+                    }
                     cell.classList.remove('active');
             }
 

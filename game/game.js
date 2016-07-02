@@ -59,7 +59,7 @@ require(
 
             // else...
             controller.clearTable();
-            renderer.refreshTable();
+            renderer.refreshTable(true);
         });
 
         // invert button

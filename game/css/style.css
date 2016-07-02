@@ -10,15 +10,21 @@ body {
     margin: auto;
 }
 #board td {
-    background-color: #222;
+    background-color: #4e280c;
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 2.5vw rgba(0, 0, 0, 1) inset;
     height: 5vw;
     transition: background-color 125ms ease;
     width: 5vw;
 }
+#board .empty {
+    background-color: green;
+}
 #board .active {
-    background-color: darkkhaki;
+    background-color: #00ebff;
+}
+#board.is-running .active {
+    background-color: darkorange;
 }
 #board.is-running td {
     transition-duration: 1500ms;

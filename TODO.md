@@ -3,7 +3,7 @@
 ## Basics
 
 * Buttons: invert
-* Stopping after achieving balance (compare arrays)
+* Game stops after achieving state of stillness but it would
 * Moving running checker to controler (currently is in two different places)
 
 ## Features
@@ -17,7 +17,7 @@
 
 ## Meta programming
 
-* Tail optimization
+* Tail call optimization
 * GPU optimization
 * Single array
 * Native modules?

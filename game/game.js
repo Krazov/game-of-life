@@ -30,8 +30,6 @@ require(
 
                 var isStill = controller.checkStillness();
 
-                console.log('Is still', isStill);
-
                 if (isStill) {
                     message.display('Life has become still. Game over.')
                     renderer.setRunning(false);

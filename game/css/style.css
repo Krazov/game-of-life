@@ -14,6 +14,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 2.5vw rgba(0, 0, 0, 1) inset;
     transition: background-color 125ms ease;
+    transform: rotate3d(0, 0, 0, 0);
 }
 @media only screen and (orientation: landscape) {
     #board td {

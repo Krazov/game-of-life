@@ -1,6 +1,6 @@
 define(
-    ['js/BoardModel.js', 'js/BoardController.js', 'js/MessageUtil.js'],
-    function BoardRendererDefinitionFn(model, controller, message) {
+    ['js/BoardModel.js', 'js/BoardController.js', 'js/GameStatus', 'js/MessageUtil.js'],
+    function BoardRendererDefinitionFn(model, controller, gameStatus, message) {
         'use strict';
 
         var setContainer = function (container) {
@@ -72,9 +72,24 @@ define(
             return this;
         };
 
+        var listenToStatus = function () {
+            var container = this.container;
+            var reactToStatus = function (eventData) {
+                if (eventData.detail === gameStatus.RUNNING) {
+                    container.classList.add('is-running');
+                } else {
+                    container.classList.remove('is-running');
+                }
+            };
+            window.addEventListener(gameStatus.EVENT_CHANGE, reactToStatus);
+
+            return this;
+        };
+
         var attachActions = function () {
             this
-                .listenToCells();
+                .listenToCells()
+                .listenToStatus();
 
             return this;
         };
@@ -99,20 +114,6 @@ define(
             return this;
         };
 
-        var setRunning = function (value) {
-            var running = !!value;
-
-            this.running = running;
-
-            if (running) {
-                this.container.classList.add('is-running');
-            } else {
-                this.container.classList.remove('is-running');
-            }
-
-            return this;
-        };
-
         var getCellCoordinates = function (cell) {
             return [Number(cell.dataset.x), Number(cell.dataset.y)];
         }
@@ -127,9 +128,9 @@ define(
             drawBoard:           drawBoard,
             refreshTable:        refreshTable,
             listenToCells:       listenToCells,
+            listenToStatus:      listenToStatus,
             attachActions:       attachActions,
             describeCell:        describeCell,
-            setRunning:          setRunning,
             getCellCoordinates:  getCellCoordinates
         };
 

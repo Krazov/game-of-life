@@ -1,9 +1,8 @@
 require(
-    ['js/BoardController.js', 'js/BoardRenderer.js', 'js/MessageUtil.js'],
-    function (controller, renderer, message) {
+    ['js/BoardController.js', 'js/BoardRenderer.js', 'js/GameStatus.js', 'js/MessageUtil.js'],
+    function (controller, renderer, gameStatus, message) {
         'use strict';
 
-        var running = false;
         var runningId = 0;
         var tickCount = 0;
 
@@ -28,23 +27,21 @@ require(
                 controller.updateTable();
                 renderer.refreshTable();
 
-                var isStill = controller.checkStillness();
+                if (controller.isLifeStil()) {
+                    message.display(`After ${tickCount} life has become still. Game over.`);
 
-                if (isStill) {
-                    message.display('Life has become still. Game over.')
-                    renderer.setRunning(false);
-                    running = false;
+                    gameStatus.setStatus(gameStatus.STOPPED);
+
                     runningId = 0;
                     tickCount = 0;
                 }
 
-                if (running) {
+                if (gameStatus.isRunning()) {
                     runningId = setTimeout(tick, 1000);
                 }
             };
 
-            running = true;
-            renderer.setRunning(true);
+            gameStatus.setStatus(gameStatus.RUNNING);
             runningId = setTimeout(tick, 1000);
 
             message.display('Game started.');
@@ -52,12 +49,11 @@ require(
 
         // stop button
         document.getElementById('stop').addEventListener('click', function stopGameFn() {
-            if (!running) {
+            if (gameStatus.isNotRunning()) {
                 return false;
             }
 
-            running = false;
-            renderer.setRunning(false);
+            gameStatus.setStatus(gameStatus.STOPPED);
             clearTimeout(runningId);
             runningId = 0;
             tickCount = 0;
@@ -67,7 +63,7 @@ require(
 
         // clear button
         document.getElementById('clear').addEventListener('click', function clearBoard() {
-            if (running) {
+            if (gameStatus.isRunning()) {
                 return false;
             }
 

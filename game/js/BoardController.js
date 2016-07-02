@@ -110,7 +110,7 @@ define(
             return this;
         };
 
-        var checkStillness = function () {
+        var isLifeStil = function () {
             var board_previous = JSON.stringify(this.previous);
             var board_current  = JSON.stringify(this.board);
 
@@ -139,7 +139,7 @@ define(
             clearTable:       clearTable,        // chainable
             checkNeighbours:  checkNeighbours,   // returns (Number) of neighbours
             changeState:      changeState,       // chainable
-            checkStillness:   checkStillness,    // returns (Boolean) current board vs previous board
+            isLifeStil:       isLifeStil,        // returns (Boolean) current board vs previous board
             getBoard:         getBoard,          // returns (Array) current board
             getPreviousValue: getPreviousValue,  // returns (Number) cell value
             getCellValue:     getCellValue,      // returns (Number) cell value

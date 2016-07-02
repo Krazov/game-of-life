@@ -39,7 +39,7 @@ If you’re pro, you can run server in `game` folder. I even created favicon for
 1. Select which fields should be alive.
 2. Press `Start`.
 
-That’s it. As currently there is no stop button, you will have to refresh page to stop it.
+You can always stop game and un-stop, or clear table and start anew.
 
 ## Additional libs
 

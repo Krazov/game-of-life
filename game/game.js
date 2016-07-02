@@ -28,6 +28,18 @@ require(
                 controller.updateTable();
                 renderer.refreshTable();
 
+                var isStill = controller.checkStillness();
+
+                console.log('Is still', isStill);
+
+                if (isStill) {
+                    message.display('Life has become still. Game over.')
+                    renderer.setRunning(false);
+                    running = false;
+                    runningId = 0;
+                    tickCount = 0;
+                }
+
                 if (running) {
                     runningId = setTimeout(tick, 1000);
                 }
@@ -42,6 +54,10 @@ require(
 
         // stop button
         document.getElementById('stop').addEventListener('click', function stopGameFn() {
+            if (!running) {
+                return false;
+            }
+
             running = false;
             renderer.setRunning(false);
             clearTimeout(runningId);

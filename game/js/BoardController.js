@@ -110,6 +110,13 @@ define(
             return this;
         };
 
+        var checkStillness = function () {
+            var board_previous = JSON.stringify(this.previous);
+            var board_current  = JSON.stringify(this.board);
+
+            return board_current === board_previous;
+        };
+
         var getBoard = function () {
             return this.board;
         };
@@ -128,13 +135,14 @@ define(
         BoardController.prototype = {
             setSize:          setSize,           // chainable
             createBoard:      createBoard,       // chainable
-            getBoard:         getBoard,          // returns (Array) current board
-            getPreviousValue: getPreviousValue,      // returns (Number) cell value
-            getCellValue:     getCellValue,      // returns (Number) cell value
             updateTable:      updateTable,       // chainable
             clearTable:       clearTable,        // chainable
             checkNeighbours:  checkNeighbours,   // returns (Number) of neighbours
             changeState:      changeState,       // chainable
+            checkStillness:   checkStillness,    // returns (Boolean) current board vs previous board
+            getBoard:         getBoard,          // returns (Array) current board
+            getPreviousValue: getPreviousValue,  // returns (Number) cell value
+            getCellValue:     getCellValue,      // returns (Number) cell value
         };
 
         return new BoardController();

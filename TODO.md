@@ -3,21 +3,20 @@
 ## Basics
 
 * Buttons: invert
-* Game stops after achieving state of stillness but it would
-* Moving running checker to controler (currently is in two different places)
 
 ## Features
 
-* Diversify _empty_ versus _dead_ to show population growth
 * Predefined sets
 * Count how long current state is holding on
-* 3D world (cube)
 * Player defined board size
-* Board adjusting to board size (CSS)
+* Board visual size adjusting to board rows and columns number (CSS)
 
 ## Meta programming
 
-* Tail call optimization
-* GPU optimization
+* Tail call optimization (probably not possible with setTimeout)
 * Single array
 * Native modules?
+
+## Future plans
+
+* 3D world (cube)

@@ -43,7 +43,7 @@ You can always stop game and un-stop, or clear table and start anew.
 
 ## Additional libs
 
-Currently I’m using [RequireJS](https://github.com/requirejs/requirejs) to organize project. The rest is pure vanilla (_fap, fap, fap…).
+Currently I’m using [RequireJS](https://github.com/requirejs/requirejs) to organize project. The rest is pure vanilla (_fap, fap, fap…_).
 
 ## License
 

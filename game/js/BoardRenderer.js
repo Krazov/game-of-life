@@ -39,7 +39,7 @@ define(
 
             var cells = this.container.querySelectorAll('td');
             [].forEach.call(cells, function (cell) {
-                if (clear && renderer.running) {
+                if (clear && !renderer.running) {
                     cell.classList.remove('active');
                     cell.classList.add('empty');
                 } else {

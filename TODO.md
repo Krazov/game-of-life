@@ -10,7 +10,7 @@
 
 * Diversify _empty_ versus _dead_ to show population growth
 * Predefined sets
-* Count
+* Count how long current state is holding on
 * 3D world (cube)
 * Player defined board size
 * Board adjusting to screen size (CSS)

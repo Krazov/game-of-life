@@ -13,20 +13,21 @@ define(
             var virtualBoard = document.createDocumentFragment();
             var board = controller.getBoard();
 
-            for (var row = 0; row < board.length; ++row) {
-                var virtualRow = document.createElement('tr');
-
-                for (var column = 0; column < board[row].length; ++column) {
-                    var virtualCell = document.createElement('td');
-
-                    virtualCell.classList.add('empty');
-                    virtualCell.dataset.x = column;
-                    virtualCell.dataset.y = row;
-
-                    virtualRow.appendChild(virtualCell);
+            for (var index = 0; index < board.length; ++index) {
+                var [width] = controller.getSize();
+                if (index % width === 0) {
+                    var virtualRow = document.createElement('tr');
                 }
+                var virtualCell = document.createElement('td');
 
-                virtualBoard.appendChild(virtualRow)
+                virtualCell.classList.add('empty');
+                virtualCell.dataset.index = index;
+
+                virtualRow.appendChild(virtualCell);
+
+                if (index % width === width - 1) {
+                    virtualBoard.appendChild(virtualRow)
+                }
             }
 
             this.container.appendChild(virtualBoard);
@@ -50,23 +51,24 @@ define(
 
         var listenToCells = function () {
             var renderer = this;
+            var currentIndex;
 
             var clickCell = function (clickEvent) {
-                if (renderer.running) {
+                if (gameStatus.isRunning()) {
                     return false;
                 }
 
                 var cell = clickEvent.target;
-                var [x, y] = renderer.getCellCoordinates(cell);
 
-                controller.changeState(x, y);
+                controller.changeState(cell.dataset.index);
                 renderer.describeCell(cell);
             };
-            var attachListeners = function (item) {
+            var attachListeners = function (item, index) {
+                currentIndex = index;
                 item.addEventListener('click', clickCell);
             };
-            var cells = this.container.querySelectorAll('td');
 
+            var cells = this.container.querySelectorAll('td');
             [].forEach.call(cells, attachListeners);
 
             return this;
@@ -96,16 +98,15 @@ define(
 
         var describeCell = function (cell) {
             var board = controller.getBoard();
+            var index = this.getCellIndex(cell);
 
-            var [x, y] = this.getCellCoordinates(cell);
-
-            switch (controller.getCellValue(x, y)) {
+            switch (controller.getCellValue(index)) {
                 case model.STATE_ALIVE:
                     cell.classList.add('active');
                     break;
                 case model.STATE_DEAD:
                 default:
-                    if (controller.getPreviousValue(x, y) === model.STATE_ALIVE) {
+                    if (controller.getPreviousValue(index) === model.STATE_ALIVE) {
                         cell.classList.remove('empty');
                     }
                     cell.classList.remove('active');
@@ -113,6 +114,10 @@ define(
 
             return this;
         };
+
+        var getCellIndex = function (cell) {
+            return Number(cell.dataset.index);
+        }
 
         var getCellCoordinates = function (cell) {
             return [Number(cell.dataset.x), Number(cell.dataset.y)];
@@ -131,6 +136,7 @@ define(
             listenToStatus:      listenToStatus,
             attachActions:       attachActions,
             describeCell:        describeCell,
+            getCellIndex:        getCellIndex,
             getCellCoordinates:  getCellCoordinates
         };
 

@@ -27,13 +27,17 @@ require(
                 controller.updateTable();
                 renderer.refreshTable();
 
-                if (controller.isLifeStil()) {
+                if (controller.isLifeStill()) {
                     message.display(`After ${tickCount} ticks life has become still. Game over.`);
-
-                    gameStatus.setStatus(gameStatus.STOPPED);
 
                     runningId = 0;
                     tickCount = 0;
+
+                    setTimeout(function () {
+                        gameStatus.setStatus(gameStatus.STOPPED);
+                    }, 1250);
+
+                    return false;
                 }
 
                 if (gameStatus.isRunning()) {

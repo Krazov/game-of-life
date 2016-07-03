@@ -10,61 +10,57 @@ define(
             return this;
         };
 
+        var getSize = function () {
+            return [this.width, this.height];
+        };
+
         var createBoard = function () {
-            this.board = [];
+            this.previous = new Array(this.width * this.height);
+            this.previous.fill(model.STATE_DEAD);
 
-            for (var row = 0; row < this.height; ++row) {
-                var innerRow = new Array(this.width);
-                innerRow.fill(model.STATE_DEAD);
-                this.board.push(innerRow);
-            }
-
-            this.previous = JSON.parse(JSON.stringify(this.board));
+            this.board = new Array(this.width * this.height);
+            this.board.fill(model.STATE_DEAD);
 
             return this;
         };
 
         var updateTable = function () {
-            var innerTable = [];
+            var controller = this;
+            var runTable = function (item, index) {
+                var neighbours = controller.checkNeighbours(index);
 
-            for (var row = 0; row < this.height; ++row) {
-                var innerRow = [];
-                for (var cell = 0; cell < this.width; ++cell) {
-                    var neighbours = this.checkNeighbours(cell, row);
-
-                    if (neighbours < 2 || neighbours > 3) {
-                        innerRow.push(model.STATE_DEAD);
-                    } else if (neighbours === 3) {
-                        innerRow.push(model.STATE_ALIVE);
-                    } else {
-                        innerRow.push(this.getCellValue(cell, row));
-                    }
+                if (neighbours < 2 || neighbours > 3) {
+                    return model.STATE_DEAD;
                 }
 
-                innerTable.push(innerRow);
-            }
+                if (neighbours === 3) {
+                    return model.STATE_ALIVE;
+                }
+
+                return item;
+            };
 
             this.previous = this.board;
-            this.board = innerTable;
+            this.board = this.board.map(runTable);
 
             return this;
         };
 
         var clearTable = function () {
-            this.board.forEach(function (row) {
-                row.fill(model.STATE_DEAD);
-            });
+            this.board.fill(model.STATE_DEAD);
 
             return this;
         };
 
-        var checkNeighbours = function (x, y) {
+        var checkNeighbours = function (index) {
+            var [x, y] = this.getCoordinates(index);
             var checkpoints = [
                 [-1, -1], [0, -1], [1, -1],
-                [-1, 0],  /* xx */ [1, 0],
-                [-1, 1],  [0, 1],  [1, 1]
+                [-1, 0],  /*  x  */ [1, 0],
+                [-1, 1],  [0,  1],  [1, 1]
             ];
 
+            // TODO: find simpler way of finding neighbours
             var neighbours = 0;
             var delta_x;
             var delta_y;
@@ -87,7 +83,7 @@ define(
                     delta_y = this.height - 1;
                 }
 
-                neighbours += this.getCellValue(delta_x, delta_y);
+                neighbours += this.getCellValue(this.getIndex(delta_x, delta_y));
 
                 if (neighbours > 3) {
                     break;
@@ -97,20 +93,20 @@ define(
             return neighbours;
         };
 
-        var changeState = function (x, y) {
-            switch (this.board[y][x]) {
+        var changeState = function (index) {
+            switch (this.board[index]) {
                 case model.STATE_ALIVE:
-                    this.board[y][x] = model.STATE_DEAD;
+                    this.board[index] = model.STATE_DEAD;
                     break;
                 case model.STATE_DEAD:
-                    this.board[y][x] = model.STATE_ALIVE;
+                    this.board[index] = model.STATE_ALIVE;
                     break;
             }
 
             return this;
         };
 
-        var isLifeStil = function () {
+        var isLifeStill = function () {
             var board_previous = JSON.stringify(this.previous);
             var board_current  = JSON.stringify(this.board);
 
@@ -121,12 +117,30 @@ define(
             return this.board;
         };
 
-        var getPreviousValue = function (x, y) {
-            return this.previous[y][x];
+        var getIndex = function (x, y) {
+            return y * this.width + x;
         }
 
-        var getCellValue = function (x, y, previous) {
-            return this.board[y][x];
+        var getCoordinates = function (index) {
+            var x = 0;
+            var y = 0;
+
+            while (index >= this.width) {
+                index -= this.width;
+                ++y;
+            }
+
+            x = index;
+
+            return [x, y];
+        };
+
+        var getPreviousValue = function (index) {
+            return this.previous[index];
+        }
+
+        var getCellValue = function (index) {
+            return this.board[index];
         };
 
         // constructor
@@ -134,13 +148,16 @@ define(
 
         BoardController.prototype = {
             setSize:          setSize,           // chainable
+            getSize:          getSize,           // returns (Array) with [width, height]
             createBoard:      createBoard,       // chainable
             updateTable:      updateTable,       // chainable
             clearTable:       clearTable,        // chainable
             checkNeighbours:  checkNeighbours,   // returns (Number) of neighbours
             changeState:      changeState,       // chainable
-            isLifeStil:       isLifeStil,        // returns (Boolean) current board vs previous board
+            isLifeStill:       isLifeStill,      // returns (Boolean) current board vs previous board
             getBoard:         getBoard,          // returns (Array) current board
+            getIndex:         getIndex,          // returns (Number) cell index
+            getCoordinates:   getCoordinates,    // returns (Array) [x, y] from given index
             getPreviousValue: getPreviousValue,  // returns (Number) cell value
             getCellValue:     getCellValue,      // returns (Number) cell value
         };

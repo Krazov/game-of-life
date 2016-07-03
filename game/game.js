@@ -10,7 +10,7 @@ require(
 
         // prepare table
         controller
-            .setSize(15, 15)
+            .setSize(17, 17)
             .createBoard();
 
         // display table
@@ -28,7 +28,7 @@ require(
                 renderer.refreshTable();
 
                 if (controller.isLifeStil()) {
-                    message.display(`After ${tickCount} life has become still. Game over.`);
+                    message.display(`After ${tickCount} ticks life has become still. Game over.`);
 
                     gameStatus.setStatus(gameStatus.STOPPED);
 

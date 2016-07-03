@@ -22,23 +22,33 @@ require(
         // start button
         document.getElementById('start').addEventListener('click', function startGameFn() {
             var tick = function () {
-                message.display('Tick #' + (++tickCount));
-
                 controller.updateTable();
                 renderer.refreshTable();
 
                 if (controller.isLifeStill()) {
-                    message.display(`After ${tickCount} ticks life has become still. Game over.`);
+                    if (tickCount > 0) {
+                        message.display(`After ${tickCount} ticks life has become still. Game over.`);
+                    } else {
+                        message.display('Dead on arrival. Game so over.');
+                    }
+
+                    if (!controller.isPopulationAlive()) {
+                        message.display('And what’s worse, whole population is dead. Game even more over.');
+                    }
 
                     runningId = 0;
                     tickCount = 0;
 
+                    // TODO: does not comply with CSS, needs investigation
                     setTimeout(function () {
                         gameStatus.setStatus(gameStatus.STOPPED);
                     }, 1250);
 
                     return false;
                 }
+
+                // else...
+                message.display('Tick #' + (++tickCount));
 
                 if (gameStatus.isRunning()) {
                     runningId = setTimeout(tick, 1000);

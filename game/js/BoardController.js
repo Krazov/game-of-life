@@ -107,10 +107,15 @@ define(
         };
 
         var isLifeStill = function () {
-            var board_previous = JSON.stringify(this.previous);
-            var board_current  = JSON.stringify(this.board);
+            return this.board.join('') === this.previous.join('');
+        };
 
-            return board_current === board_previous;
+        var isPopulationAlive = function () {
+            var anyAlive = function (item) {
+                return item === model.STATE_ALIVE;
+            }
+
+            return this.board.some(anyAlive);
         };
 
         var getBoard = function () {
@@ -147,19 +152,20 @@ define(
         var BoardController = function() {};
 
         BoardController.prototype = {
-            setSize:          setSize,           // chainable
-            getSize:          getSize,           // returns (Array) with [width, height]
-            createBoard:      createBoard,       // chainable
-            updateTable:      updateTable,       // chainable
-            clearTable:       clearTable,        // chainable
-            checkNeighbours:  checkNeighbours,   // returns (Number) of neighbours
-            changeState:      changeState,       // chainable
-            isLifeStill:       isLifeStill,      // returns (Boolean) current board vs previous board
-            getBoard:         getBoard,          // returns (Array) current board
-            getIndex:         getIndex,          // returns (Number) cell index
-            getCoordinates:   getCoordinates,    // returns (Array) [x, y] from given index
-            getPreviousValue: getPreviousValue,  // returns (Number) cell value
-            getCellValue:     getCellValue,      // returns (Number) cell value
+            setSize:           setSize,           // chainable
+            getSize:           getSize,           // returns (Array) with [width, height]
+            createBoard:       createBoard,       // chainable
+            updateTable:       updateTable,       // chainable
+            clearTable:        clearTable,        // chainable
+            checkNeighbours:   checkNeighbours,   // returns (Number) of neighbours
+            changeState:       changeState,       // chainable
+            isLifeStill:       isLifeStill,       // returns (Boolean) current board vs previous board
+            isPopulationAlive: isPopulationAlive, // returns (Boolean) is any element on board alive
+            getBoard:          getBoard,          // returns (Array) current board
+            getIndex:          getIndex,          // returns (Number) cell index
+            getCoordinates:    getCoordinates,    // returns (Array) [x, y] from given index
+            getPreviousValue:  getPreviousValue,  // returns (Number) cell value
+            getCellValue:      getCellValue,      // returns (Number) cell value
         };
 
         return new BoardController();
